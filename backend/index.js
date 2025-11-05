@@ -20,7 +20,6 @@ const port = process.env.PORT || 5000;
 connectDB();
 
 const app = express();
-
 app.use(express.json());
 
 const allowedOrigins = [
@@ -30,10 +29,19 @@ const allowedOrigins = [
 
 app.use(
   cors({
-    origin: allowedOrigins,
+    origin: function (origin, callback) {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        console.log("CORS blocked origin:", origin);
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
     credentials: true,
   })
 );
+
+app.options("*", cors());
 
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
