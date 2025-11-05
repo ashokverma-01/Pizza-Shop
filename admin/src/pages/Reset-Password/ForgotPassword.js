@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import useBackButton from "../../utils/BackButton";
+import axiosInstance from "../../utils/axiosUrl";
 
 const ForgotPassword = () => {
   const navigate = useNavigate();
@@ -29,13 +29,12 @@ const ForgotPassword = () => {
 
     try {
       setLoading(true);
-      const { data } = await axios.post(
-        "http://localhost:5000/api/users/send-otp",
-        { email }
-      );
+      const { data } = await axiosInstance.post("/api/users/send-otp", {
+        email,
+      });
 
       showAlert("success", data?.message || "OTP sent to your email.");
-      setTimeout(() => setStep(2), 1000); // Go to OTP step after success
+      setTimeout(() => setStep(2), 1000);
     } catch (err) {
       showAlert("danger", err?.response?.data?.message || "Error sending OTP.");
     } finally {
@@ -50,10 +49,10 @@ const ForgotPassword = () => {
 
     try {
       setLoading(true);
-      const { data } = await axios.post(
-        "http://localhost:5000/api/users/verify-otp",
-        { email, otp }
-      );
+      const { data } = await axiosInstance.post("/api/users/verify-otp", {
+        email,
+        otp,
+      });
 
       showAlert("success", data?.message || "OTP verified successfully.");
       setTimeout(() => setStep(3), 1000);
@@ -74,10 +73,10 @@ const ForgotPassword = () => {
 
     try {
       setLoading(true);
-      const { data } = await axios.post(
-        "http://localhost:5000/api/users/reset-password",
-        { email, password }
-      );
+      const { data } = await axiosInstance.post("/api/users/reset-password", {
+        email,
+        password,
+      });
 
       showAlert("success", data?.message || "Password reset successful!");
       setTimeout(() => navigate("/login"), 1500);

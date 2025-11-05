@@ -7,7 +7,7 @@ import { Link, useNavigate } from "react-router-dom";
 import AppContext from "../../context/AppContext";
 import ModalPop from "../../utils/ModalPop";
 import Pagination from "../../utils/Pagination";
-import axios from "axios";
+import axiosInstance from "../../utils/axiosUrl";
 import { FaSearch } from "react-icons/fa";
 
 const Products = () => {
@@ -68,8 +68,8 @@ const Products = () => {
 
   const handleFilter = async () => {
     try {
-      const res = await axios.post(
-        "http://localhost:5000/api/products/filtered-products",
+      const res = await axiosInstance.post(
+        "/api/products/filtered-products",
         { name: searchName } // e.g. "protein"
       );
       setFilteredList(res.data);

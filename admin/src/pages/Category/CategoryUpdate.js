@@ -3,9 +3,9 @@ import { Button } from "@mui/material";
 import { useParams } from "react-router-dom";
 import AppContext from "../../context/AppContext";
 import useBackButton from "../../utils/BackButton";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { ShowToast, Severity } from "../../utils/toast";
+import axiosInstance from "../../utils/axiosUrl";
 
 const CategoryUpdate = () => {
   const Navigate = useNavigate();
@@ -25,7 +25,7 @@ const CategoryUpdate = () => {
   useEffect(() => {
     const fetchCategory = async () => {
       try {
-        const res = await axios.get(`http://localhost:5000/api/category/${id}`);
+        const res = await axiosInstance.get(`/api/category/${id}`);
         const category = res.data;
         setFormData({
           name: category.name || "",
@@ -64,15 +64,11 @@ const CategoryUpdate = () => {
       });
 
       // Call update API
-      const res = await axios.put(
-        `http://localhost:5000/api/category/${id}`,
-        data,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
+      const res = await axiosInstance.put(`/api/category/${id}`, data, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
 
       if (res.data.success) {
         ShowToast("Category Update successfully", Severity.SUCCESS);

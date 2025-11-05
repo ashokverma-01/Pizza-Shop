@@ -1,7 +1,7 @@
 import { useParams } from "react-router-dom";
-import axios from "axios";
 import { useEffect, useState } from "react";
 import useBackButton from "../../utils/BackButton";
+import axiosInstance from "../../utils/axiosUrl";
 
 const CategoryDetails = () => {
   const handleBack = useBackButton("/products/list");
@@ -12,7 +12,7 @@ const CategoryDetails = () => {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const res = await axios.get(`http://localhost:5000/api/category/${id}`);
+        const res = await axiosInstance.get(`/api/category/${id}`);
         setCategory(res.data);
       } catch (err) {
         console.error("Failed to fetch category:", err);

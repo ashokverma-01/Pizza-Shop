@@ -73,7 +73,7 @@ const Footer = () => {
               {["Home", "About", "Products", "Contact"].map((item) => (
                 <li key={item}>
                   <a
-                    href={`/${item.toLowerCase().replace(/\s/g, "")}`}
+                    to={`/${item.toLowerCase()}`}
                     className="hover:text-blue-600 dark:hover:text-blue-400  text-gray-600 dark:text-gray-400 transition-colors duration-200 hover:underline underline-offset-4"
                   >
                     {item}
@@ -97,7 +97,7 @@ const Footer = () => {
               ].map((item) => (
                 <li key={item}>
                   <a
-                    href={`/${item.toLowerCase().replace(/\s/g, "")}`}
+                    to={`/${item.toLowerCase()}`}
                     className="hover:text-blue-600 dark:hover:text-blue-400  text-gray-600 dark:text-gray-400 transition-colors duration-200 hover:underline underline-offset-4"
                   >
                     {item}

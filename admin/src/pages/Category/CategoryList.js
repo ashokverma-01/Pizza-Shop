@@ -9,7 +9,7 @@ import Pagination from "../../utils/Pagination";
 import { FaSearch } from "react-icons/fa";
 import { MdOutlineRemoveRedEye } from "react-icons/md";
 import { ShowToast, Severity } from "../../utils/toast";
-import axios from "axios";
+import axiosInstance from "../../utils/axiosUrl";
 
 const CategoryList = () => {
   const navigate = useNavigate();
@@ -55,10 +55,9 @@ const CategoryList = () => {
 
   const handleFilter = async () => {
     try {
-      const res = await axios.post(
-        "http://localhost:5000/api/category/filtered-category",
-        { name: searchName }
-      );
+      const res = await axiosInstance.post("/api/category/filtered-category", {
+        name: searchName,
+      });
       setFilteredList(res.data);
     } catch (error) {
       console.error("Filter Error:", error);
@@ -76,17 +75,16 @@ const CategoryList = () => {
 
   const handleStatusToggle = async (id, newStatus) => {
     try {
-      const res = await axios.put(
-        `http://localhost:5000/api/category/status/${id}`,
-        { isActive: newStatus }
-      );
+      const res = await axiosInstance.put(`/api/category/status/${id}`, {
+        isActive: newStatus,
+      });
 
       if (res.data.success) {
         ShowToast(
           `Category ${newStatus ? "activated" : "deactivated"} successfully`,
           Severity.SUCCESS
         );
-        fetchCategories(); // Refresh list
+        fetchCategories();
       } else {
         ShowToast("Failed to update status", Severity.ERROR);
       }

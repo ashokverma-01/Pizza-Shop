@@ -1,10 +1,10 @@
 import { useState, useEffect } from "react";
 import AppContext from "./AppContext";
-import axios from "axios";
 import { io } from "socket.io-client";
 import { ShowToast, Severity } from "../utils/toast";
+import axiosInstance from "../utils/axiosUrl";
 
-const socket = io("http://localhost:5000");
+const socket = io("https://pizza-shop-3eov.onrender.com");
 export const AppState = ({ children }) => {
   const [isLogin, setIsLogin] = useState(
     localStorage.getItem("isLogin") === "true"
@@ -59,8 +59,8 @@ export const AppState = ({ children }) => {
 
   const login = async (email, password) => {
     try {
-      const res = await axios.post(
-        "http://localhost:5000/api/users/auth",
+      const res = await axiosInstance.post(
+        "/api/users/auth",
         { email, password },
         { withCredentials: true }
       );
@@ -108,8 +108,8 @@ export const AppState = ({ children }) => {
 
   const logout = async () => {
     try {
-      await axios.post(
-        "http://localhost:5000/api/users/logout",
+      await axiosInstance.post(
+        "/api/users/logout",
         {},
         { withCredentials: true }
       );
@@ -127,9 +127,7 @@ export const AppState = ({ children }) => {
   const fetchProducts = async () => {
     try {
       setLoadingProducts(true);
-      const { data } = await axios.get(
-        "http://localhost:5000/api/products/allProducts"
-      );
+      const { data } = await axiosInstance.get("/api/products/allProducts");
       setProducts(data.products || data);
       setLoadingProducts(false);
     } catch (error) {
@@ -141,8 +139,8 @@ export const AppState = ({ children }) => {
 
   const addProduct = async (productData) => {
     try {
-      const { data } = await axios.post(
-        "http://localhost:5000/api/products/add",
+      const { data } = await axiosInstance.post(
+        "/api/products/add",
         productData,
         {
           headers: { "Content-Type": "multipart/form-data" },
@@ -153,16 +151,16 @@ export const AppState = ({ children }) => {
       ShowToast("Add Product successfully", Severity.SUCCESS);
       fetchProducts();
 
-      return { success: true, product: data.product || data }; // ✅ return added
+      return { success: true, product: data.product || data };
     } catch (error) {
       ShowToast("Product error", Severity.ERROR);
-      return { success: false, error }; // ✅ return added
+      return { success: false, error };
     }
   };
 
   const deleteProduct = async (id) => {
     try {
-      await axios.delete(`http://localhost:5000/api/products/${id}`, {
+      await axiosInstance.delete(`/api/products/${id}`, {
         withCredentials: true,
       });
 
@@ -178,9 +176,7 @@ export const AppState = ({ children }) => {
 
   const fetchCategories = async () => {
     try {
-      const { data } = await axios.get(
-        "http://localhost:5000/api/category/categories"
-      );
+      const { data } = await axiosInstance.get("/api/category/categories");
       setCategories(data.categories || data);
       setLoadingCategories(false);
     } catch (error) {
@@ -192,14 +188,10 @@ export const AppState = ({ children }) => {
 
   const addCategory = async (categoryData) => {
     try {
-      const { data } = await axios.post(
-        "http://localhost:5000/api/category",
-        categoryData,
-        {
-          headers: { "Content-Type": "multipart/form-data" },
-          withCredentials: true,
-        }
-      );
+      const { data } = await axiosInstance.post("/api/category", categoryData, {
+        headers: { "Content-Type": "multipart/form-data" },
+        withCredentials: true,
+      });
       setCategories((prev) => [...prev, data.category || data]);
       ShowToast("Add Category successfully", Severity.SUCCESS);
       fetchCategories();
@@ -213,7 +205,7 @@ export const AppState = ({ children }) => {
 
   const deleteCategory = async (id) => {
     try {
-      await axios.delete(`http://localhost:5000/api/category/${id}`, {
+      await axiosInstance.delete(`/api/category/${id}`, {
         withCredentials: true,
       });
 
@@ -229,7 +221,7 @@ export const AppState = ({ children }) => {
 
   const fetchUsers = async () => {
     try {
-      const { data } = await axios.get("http://localhost:5000/api/users", {
+      const { data } = await axiosInstance.get("/api/users", {
         withCredentials: true,
       });
       setUsers(data.users || data);
@@ -244,7 +236,7 @@ export const AppState = ({ children }) => {
 
   const deleteCustomer = async (id) => {
     try {
-      await axios.delete(`http://localhost:5000/api/users/${id}`, {
+      await axiosInstance.delete(`/api/users/${id}`, {
         withCredentials: true,
       });
 
@@ -260,14 +252,11 @@ export const AppState = ({ children }) => {
 
   const fetchNotifications = async () => {
     try {
-      const { data } = await axios.get(
-        "http://localhost:5000/api/notification",
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        }
-      );
+      const { data } = await axiosInstance.get("/api/notification", {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
       setNotifications(data);
     } catch (err) {
       console.error(err);
@@ -277,8 +266,8 @@ export const AppState = ({ children }) => {
   // Mark notification as read
   const markAsRead = async (id) => {
     try {
-      await axios.put(
-        `http://localhost:5000/api/notification/${id}/read`,
+      await axiosInstance.put(
+        `/api/notification/${id}/read`,
         {},
         {
           headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
@@ -295,7 +284,7 @@ export const AppState = ({ children }) => {
   // Delete notification
   const handleDeleteNotification = async (id) => {
     try {
-      await axios.delete(`http://localhost:5000/api/notification/${id}`, {
+      await axiosInstance.delete(`/api/notification/${id}`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
@@ -310,7 +299,7 @@ export const AppState = ({ children }) => {
 
   const handleDeleteAll = async () => {
     try {
-      await axios.delete("http://localhost:5000/api/notification/all/delete", {
+      await axiosInstance.delete("/api/notification/all/delete", {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
       });
 
@@ -324,14 +313,11 @@ export const AppState = ({ children }) => {
   const getOrder = async (orderId) => {
     if (!user) throw new Error("User not logged in");
     try {
-      const { data } = await axios.get(
-        `http://localhost:5000/api/orders/${orderId}`,
-        {
-          headers: {
-            Authorization: `Bearer ${user.token}`, // must be correct
-          },
-        }
-      );
+      const { data } = await axiosInstance.get(`/api/orders/${orderId}`, {
+        headers: {
+          Authorization: `Bearer ${user.token}`,
+        },
+      });
       return data;
     } catch (err) {
       console.error("Get Order Error:", err.response?.data || err);
@@ -343,7 +329,7 @@ export const AppState = ({ children }) => {
     if (!user) return;
     try {
       setLoading(true);
-      const { data } = await axios.get("http://localhost:5000/api/orders", {
+      const { data } = await axiosInstance.get("/api/orders", {
         headers: {
           Authorization: `Bearer ${user.token}`,
         },
@@ -361,7 +347,7 @@ export const AppState = ({ children }) => {
 
   const deleteOrder = async (id) => {
     try {
-      await axios.delete(`http://localhost:5000/api/orders/${id}`, {
+      await axiosInstance.delete(`/api/orders/${id}`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
@@ -379,8 +365,8 @@ export const AppState = ({ children }) => {
     try {
       const token = localStorage.getItem("token");
 
-      const { data } = await axios.put(
-        `http://localhost:5000/api/orders/${orderId}`,
+      const { data } = await axiosInstance.put(
+        `/api/orders/${orderId}`,
         { status: newStatus },
         {
           headers: {
@@ -408,15 +394,11 @@ export const AppState = ({ children }) => {
   const unreadCount = notifications.filter((n) => !n.isRead).length;
 
   useEffect(() => {
-    // Initial fetch
     fetchNotifications();
-
-    // ✅ Listen for realtime notification event
     socket.on("newNotification", (newNotification) => {
       setNotifications((prev) => [newNotification, ...prev]);
     });
 
-    // ✅ Cleanup on unmount
     return () => socket.off("newNotification");
   }, []);
 

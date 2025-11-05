@@ -3,9 +3,9 @@ import { Button } from "@mui/material";
 import { useParams } from "react-router-dom";
 import AppContext from "../../context/AppContext";
 import useBackButton from "../../utils/BackButton";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { ShowToast, Severity } from "../../utils/toast";
+import axiosInstance from "../../utils/axiosUrl";
 
 const CustomerUpdate = () => {
   const navigate = useNavigate();
@@ -26,7 +26,7 @@ const CustomerUpdate = () => {
   useEffect(() => {
     const fetchCustomer = async () => {
       try {
-        const res = await axios.get(`http://localhost:5000/api/users/${id}`);
+        const res = await axiosInstance.get(`/api/users/${id}`);
         const customer = res.data;
         setFormData({
           username: customer.username || "",
@@ -65,13 +65,9 @@ const CustomerUpdate = () => {
         data.append(key, value);
       });
 
-      const res = await axios.put(
-        `http://localhost:5000/api/users/${id}`,
-        data,
-        {
-          headers: { "Content-Type": "multipart/form-data" },
-        }
-      );
+      const res = await axiosInstance.put(`/api/users/${id}`, data, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
 
       if (res.data && res.data._id) {
         ShowToast(
@@ -79,19 +75,15 @@ const CustomerUpdate = () => {
           Severity.SUCCESS
         );
 
-        // ✅ Use res.data instead of updatedUser
         const updatedUser = {
           ...res.data,
-          imageUrl: `${res.data.imageUrl}?t=${Date.now()}`, // Force browser refresh
+          imageUrl: `${res.data.imageUrl}?t=${Date.now()}`,
         };
 
-        // ✅ Update React state
         setUser(updatedUser);
 
-        // ✅ Update localStorage so it persists after refresh
         localStorage.setItem("user", JSON.stringify(updatedUser));
 
-        // ✅ Optional: update user list and navigate
         await fetchUsers();
         navigate("/customer/list");
       } else {

@@ -1,5 +1,4 @@
 import { useParams } from "react-router-dom";
-import axios from "axios";
 import { useContext, useEffect, useState } from "react";
 import { MdBrandingWatermark } from "react-icons/md";
 import { BiSolidCategoryAlt } from "react-icons/bi";
@@ -7,6 +6,7 @@ import { IoMdPricetag } from "react-icons/io";
 import { FaWindowRestore } from "react-icons/fa";
 import useBackButton from "../../utils/BackButton";
 import AppContext from "../../context/AppContext";
+import axiosInstance from "../../utils/axiosUrl";
 
 const ProductDetails = () => {
   const handleBack = useBackButton("/products/list");
@@ -17,7 +17,7 @@ const ProductDetails = () => {
   useEffect(() => {
     const fetchProduct = async () => {
       try {
-        const res = await axios.get(`http://localhost:5000/api/products/${id}`);
+        const res = await axiosInstance.get(`/api/products/${id}`);
         setProduct(res.data);
       } catch (err) {
         console.error("Failed to fetch product:", err);

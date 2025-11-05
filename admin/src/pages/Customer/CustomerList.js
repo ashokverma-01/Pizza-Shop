@@ -9,8 +9,8 @@ import AppContext from "../../context/AppContext";
 import ModalPop from "../../utils/ModalPop";
 import Pagination from "../../utils/Pagination";
 import useBackButton from "../../utils/BackButton";
-import axios from "axios";
 import { ShowToast, Severity } from "../../utils/toast";
+import axiosInstance from "../../utils/axiosUrl";
 
 const CustomerList = () => {
   const handleBack = useBackButton("/");
@@ -62,15 +62,15 @@ const CustomerList = () => {
 
   const handleStatusToggle = async (id, newStatus) => {
     try {
-      const res = await axios.put(
-        `http://localhost:5000/api/users/status/${id}`,
-        { isAdmin: newStatus }, // must match backend
+      const res = await axiosInstance.put(
+        `/api/users/status/${id}`,
+        { isAdmin: newStatus },
         { withCredentials: true }
       );
 
       if (res.data.success) {
         ShowToast(res.data.message, "success");
-        fetchUsers(); // refresh list
+        fetchUsers();
       }
     } catch (error) {
       console.error("Status update failed:", error);

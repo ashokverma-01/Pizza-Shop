@@ -3,7 +3,7 @@ import { Button } from "@mui/material";
 import { useParams } from "react-router-dom";
 import AppContext from "../../context/AppContext";
 import useBackButton from "../../utils/BackButton";
-import axios from "axios";
+import axiosInstance from "../../utils/axiosUrl";
 import { useNavigate } from "react-router-dom";
 import { ShowToast, Severity } from "../../utils/toast";
 
@@ -32,7 +32,7 @@ const ProductUpdate = () => {
   useEffect(() => {
     const fetchProduct = async () => {
       try {
-        const res = await axios.get(`http://localhost:5000/api/products/${id}`);
+        const res = await axiosInstance.get(`/api/products/${id}`);
         const product = res.data;
         setFormData({
           name: product.name || "",
@@ -79,15 +79,11 @@ const ProductUpdate = () => {
       });
 
       // Call update API
-      const res = await axios.put(
-        `http://localhost:5000/api/products/${id}`,
-        data,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
+      const res = await axiosInstance.put(`/api/products/${id}`, data, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
 
       if (res.data.success) {
         ShowToast("Product Update successfully", Severity.SUCCESS);

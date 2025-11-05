@@ -1,9 +1,9 @@
 import { useParams } from "react-router-dom";
-import axios from "axios";
 import { useEffect, useState } from "react";
 import useBackButton from "../../utils/BackButton";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@mui/material";
+import axiosInstance from "../../utils/axiosUrl";
 
 const CustomerDetails = () => {
   const navigate = useNavigate();
@@ -14,7 +14,7 @@ const CustomerDetails = () => {
   useEffect(() => {
     const fetchCustomer = async () => {
       try {
-        const res = await axios.get(`http://localhost:5000/api/users/${id}`);
+        const res = await axiosInstance.get(`/api/users/${id}`);
         setCustomer(res.data);
       } catch (err) {
         console.error("Failed to fetch customer:", err);
