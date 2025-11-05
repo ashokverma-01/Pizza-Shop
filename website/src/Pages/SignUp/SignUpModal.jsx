@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { FcGoogle } from "react-icons/fc";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
-import axios from "axios";
 import { ShowToast, Severity } from "../../utils/toast";
 import pizzaLogin from "../../../assets/login.jpg";
+import axiosInstance from "../../utils/axiosUrl";
 
 const SignUpModal = ({ isOpen, onClose, openSignIn }) => {
   const [username, setName] = useState("");
@@ -23,7 +23,7 @@ const SignUpModal = ({ isOpen, onClose, openSignIn }) => {
     setLoading(true);
 
     try {
-      const res = await axios.post("http://localhost:5000/api/users", {
+      const res = await axiosInstance.post("/api/users", {
         username,
         email,
         password,

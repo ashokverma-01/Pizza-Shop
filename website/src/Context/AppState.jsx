@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import AppContext from "./AppContext";
-import axios from "axios";
 import { ShowToast, Severity } from "../utils/toast";
+import axiosInstance from "../utils/axiosUrl";
 
 export const AppState = ({ children }) => {
   const [themeMode, setThemeMode] = useState(() => {
@@ -46,10 +46,7 @@ export const AppState = ({ children }) => {
 
   const loginUser = async (userData) => {
     try {
-      const res = await axios.post(
-        "http://localhost:5000/api/users/auth",
-        userData
-      );
+      const res = await axiosInstance.post("/api/users/auth", userData);
 
       if (res?.data?.user && res?.data?.user.token) {
         const userWithToken = {
@@ -70,8 +67,8 @@ export const AppState = ({ children }) => {
 
   const logoutUser = async () => {
     try {
-      await axios.post(
-        "http://localhost:5000/api/users/logout",
+      await axiosInstance.post(
+        "/api/users/logout",
         {},
         { withCredentials: true }
       );
@@ -88,12 +85,8 @@ export const AppState = ({ children }) => {
 
   const fetchProducts = async () => {
     try {
-      const response = await fetch(
-        "http://localhost:5000/api/products/allProducts"
-      );
-      if (!response.ok) throw new Error("Failed to fetch products");
-      const data = await response.json();
-      setProducts(data);
+      const response = await axiosInstance.get("/api/products/allProducts");
+      setProducts(response.data);
     } catch (error) {
       console.error("Error fetching products:", error);
     }
@@ -101,12 +94,8 @@ export const AppState = ({ children }) => {
 
   const fetchCategories = async () => {
     try {
-      const response = await fetch(
-        "http://localhost:5000/api/category/categories"
-      );
-      if (!response.ok) throw new Error("Failed to fetch categories");
-      const data = await response.json();
-      setCategories(data);
+      const response = await axiosInstance.get("/api/category/categories");
+      setCategories(response.data);
     } catch (error) {
       console.error("Error fetching categories:", error);
     }
@@ -115,7 +104,7 @@ export const AppState = ({ children }) => {
   const fetchCart = async () => {
     if (!user) return;
     try {
-      const res = await axios.get("http://localhost:5000/api/cart", {
+      const res = await axiosInstance.get("/api/cart", {
         headers: { Authorization: `Bearer ${user.token}` },
       });
       setCart(res.data.items || []);
@@ -131,8 +120,8 @@ export const AppState = ({ children }) => {
     }
 
     try {
-      const res = await axios.post(
-        "http://localhost:5000/api/cart/add",
+      const res = await axiosInstance.post(
+        "/api/cart/add",
         { productId, quantity },
         {
           headers: {
@@ -153,8 +142,8 @@ export const AppState = ({ children }) => {
   const updateCart = async (productId, quantity) => {
     if (!user) return alert("Please login first!");
     try {
-      const res = await axios.put(
-        "http://localhost:5000/api/cart/update",
+      const res = await axiosInstance.put(
+        "/api/cart/update",
         { productId, quantity },
         { headers: { Authorization: `Bearer ${user.token}` } }
       );
@@ -167,7 +156,7 @@ export const AppState = ({ children }) => {
 
   const removeCart = async (productId) => {
     try {
-      const res = await axios.delete("http://localhost:5000/api/cart/remove", {
+      const res = await axiosInstance.delete("/api/cart/remove", {
         data: { productId },
         headers: { Authorization: `Bearer ${user.token}` },
       });
@@ -182,7 +171,7 @@ export const AppState = ({ children }) => {
     if (!user) return alert("Please login first!");
 
     try {
-      await axios.delete("http://localhost:5000/api/cart/clear", {
+      await axiosInstance.delete("/api/cart/clear", {
         headers: { Authorization: `Bearer ${user.token}` },
       });
       setCart([]);
@@ -195,7 +184,7 @@ export const AppState = ({ children }) => {
   const fetchWishlist = async () => {
     if (!user) return;
     try {
-      const { data } = await axios.get("http://localhost:5000/api/wishlist", {
+      const { data } = await axiosInstance.get("/api/wishlist", {
         headers: { Authorization: `Bearer ${user.token}` },
       });
       setWishlist(data.map((item) => item._id));
@@ -206,8 +195,8 @@ export const AppState = ({ children }) => {
 
   const addToWishlist = async (productId) => {
     try {
-      await axios.post(
-        `http://localhost:5000/api/wishlist/add`,
+      await axiosInstance.post(
+        `/api/wishlist/add`,
         { productId },
         { headers: { Authorization: `Bearer ${user.token}` } }
       );
@@ -220,7 +209,7 @@ export const AppState = ({ children }) => {
 
   const removeFromWishlist = async (productId) => {
     try {
-      await axios.delete(`http://localhost:5000/api/wishlist/${productId}`, {
+      await axiosInstance.delete(`/api/wishlist/${productId}`, {
         headers: { Authorization: `Bearer ${user.token}` },
       });
       setWishlist((prev) => prev.filter((id) => id !== productId));
@@ -250,8 +239,8 @@ export const AppState = ({ children }) => {
           Authorization: `Bearer ${user.token}`,
         },
       };
-      const { data } = await axios.post(
-        "http://localhost:5000/api/orders",
+      const { data } = await axiosInstance.post(
+        "/api/orders",
         orderData,
         config
       );
@@ -270,10 +259,9 @@ export const AppState = ({ children }) => {
     if (!user) return;
     try {
       setLoading(true);
-      const { data } = await axios.get(
-        "http://localhost:5000/api/orders/mine",
-        { headers: { Authorization: `Bearer ${user.token}` } }
-      );
+      const { data } = await axiosInstance.get("/api/orders/mine", {
+        headers: { Authorization: `Bearer ${user.token}` },
+      });
       setOrder(data);
       setLoading(false);
       return data;
@@ -289,10 +277,9 @@ export const AppState = ({ children }) => {
     if (!user) throw new Error("User not logged in");
     try {
       setLoading(true);
-      const { data } = await axios.get(
-        `http://localhost:5000/api/orders/${orderId}`,
-        { headers: { Authorization: `Bearer ${user.token}` } }
-      );
+      const { data } = await axiosInstance.get(`/api/orders/${orderId}`, {
+        headers: { Authorization: `Bearer ${user.token}` },
+      });
       setSingleOrder(data);
       setLoading(false);
       return data;
@@ -305,8 +292,8 @@ export const AppState = ({ children }) => {
 
   const getRelatedProducts = async (productId) => {
     try {
-      const { data } = await axios.get(
-        `http://localhost:5000/api/products/related/${productId}`
+      const { data } = await axiosInstance.get(
+        `/api/products/related/${productId}`
       );
       setRelatedProducts(data);
     } catch (error) {
@@ -315,16 +302,14 @@ export const AppState = ({ children }) => {
   };
 
   const translateText = async (text, targetLang) => {
-    if (cache[text]) return cache[text]; // ✅ use cache if already stored
+    if (cache[text]) return cache[text];
 
     try {
-      const res = await fetch(
-        `http://localhost:5000/api/translate?text=${encodeURIComponent(
-          text
-        )}&lang=${targetLang}`
+      const res = await axiosInstance.get(
+        `/api/translate?text=${encodeURIComponent(text)}&lang=${targetLang}`
       );
 
-      const data = await res.json();
+      const data = res.data;
 
       if (data.translatedText) {
         saveCache(text, data.translatedText);
@@ -337,6 +322,7 @@ export const AppState = ({ children }) => {
       return text;
     }
   };
+
   const translatePage = async (targetLang) => {
     const elements = document.querySelectorAll(
       "h1, h2, h3, p, span, button, a"
@@ -357,7 +343,7 @@ export const AppState = ({ children }) => {
     if (newLang === "hi") {
       await translatePage("hi");
     } else {
-      window.location.reload(); // revert to English by reloading page
+      window.location.reload();
     }
   };
 
@@ -366,13 +352,11 @@ export const AppState = ({ children }) => {
     setCache(saved);
   }, []);
 
-  // ✅ Products aur Categories sirf 1 baar load hon
   useEffect(() => {
     fetchProducts();
     fetchCategories();
   }, []);
 
-  // ✅ User ke login hone ke baad cart, wishlist, orders load hon
   useEffect(() => {
     if (user) {
       fetchCart();

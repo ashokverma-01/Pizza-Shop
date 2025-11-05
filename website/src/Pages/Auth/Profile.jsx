@@ -2,8 +2,8 @@ import React, { useState, useContext, useEffect } from "react";
 import AppContext from "../../Context/AppContext";
 import { Camera, ShoppingCart, Heart } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
 import { ShowToast, Severity } from "../../utils/toast";
+import axiosInstance from "../../utils/axiosUrl";
 
 const Profile = () => {
   const navigate = useNavigate();
@@ -15,7 +15,6 @@ const Profile = () => {
   const [selectedFile, setSelectedFile] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
 
-  // ✅ Load user profile (safe for refresh)
   useEffect(() => {
     const loadUser = async () => {
       try {
@@ -24,18 +23,12 @@ const Profile = () => {
           withCredentials: true,
         };
 
-        // 3️⃣ Fetch profile from backend
-        const { data } = await axios.get(
-          "http://localhost:5000/api/users/profile",
-          config
-        );
+        const { data } = await axiosInstance.get("/api/users/profile", config);
 
-        // 4️⃣ Merge token (important for persistence)
         const updatedUser = { ...data, token: currentUser.token };
         setUser(updatedUser);
         localStorage.setItem("user", JSON.stringify(updatedUser));
 
-        // 5️⃣ Set form data
         setUsername(data.username || "");
         setEmail(data.email || "");
         setImage(data.imageUrl || "");
@@ -45,13 +38,10 @@ const Profile = () => {
       }
     };
 
-    // Run only if user missing or incomplete
     if (!user || !user.username) {
       loadUser();
     }
   }, [user, setUser, navigate]);
-
-  // ✅ Handle Image Upload Preview
   const handleImageChange = (e) => {
     const file = e.target.files?.[0];
     if (file) {
@@ -62,7 +52,6 @@ const Profile = () => {
     }
   };
 
-  // ✅ Handle Update Profile
   const handleUpdate = async (e) => {
     e.preventDefault();
 
@@ -80,13 +69,13 @@ const Profile = () => {
         },
       };
 
-      const { data } = await axios.put(
-        "http://localhost:5000/api/users/profile",
+      const { data } = await axiosInstance.put(
+        "/api/users/profile",
         formData,
         config
       );
 
-      setUser({ ...data, token: user.token }); // preserve old token manually
+      setUser({ ...data, token: user.token });
       localStorage.setItem(
         "user",
         JSON.stringify({ ...data, token: user.token })
@@ -114,7 +103,6 @@ const Profile = () => {
       </div>
     );
 
-  // ✅ Handle unauthorized user
   if (!user)
     return (
       <div className="min-h-screen flex items-center justify-center">

@@ -49,15 +49,14 @@ const ProductCard = ({
   };
   const handleWishlistClick = async () => {
     if (!user) {
-      setIsSignInOpen(true); // open login modal if user is not logged in
+      setIsSignInOpen(true);
       return;
     }
 
     if (!_id) return;
 
-    // Toggle wishlist and update local state
     try {
-      await toggleWishlist(_id); // add/remove automatically handled in context
+      await toggleWishlist(_id);
     } catch (err) {
       console.error("Error toggling wishlist:", err);
     }

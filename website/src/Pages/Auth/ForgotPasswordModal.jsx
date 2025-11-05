@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import axios from "axios";
 import { ShowToast, Severity } from "../../utils/toast";
 import { useNavigate } from "react-router-dom";
+import axiosInstance from "../../utils/axiosUrl";
 
 const ForgotPasswordModal = ({ isOpen, onClose }) => {
   const navigate = useNavigate();
@@ -14,7 +14,7 @@ const ForgotPasswordModal = ({ isOpen, onClose }) => {
 
   const sendOTP = async () => {
     try {
-      await axios.post("http://localhost:5000/api/users/send-otp", { email });
+      await axiosInstance.post("/api/users/send-otp", { email });
 
       ShowToast("OTP sent to your email", Severity.SUCCESS);
       setStep(2);
@@ -25,7 +25,7 @@ const ForgotPasswordModal = ({ isOpen, onClose }) => {
 
   const verifyOTP = async () => {
     try {
-      await axios.post("http://localhost:5000/api/users/verify-otp", {
+      await axiosInstance.post("/api/users/verify-otp", {
         email,
         otp,
       });
@@ -39,7 +39,7 @@ const ForgotPasswordModal = ({ isOpen, onClose }) => {
 
   const resetPassword = async () => {
     try {
-      await axios.post("http://localhost:5000/api/users/reset-password", {
+      await axiosInstance.post("/api/users/reset-password", {
         email,
         password,
       });

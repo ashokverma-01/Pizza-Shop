@@ -36,7 +36,6 @@ const Product = () => {
   const [slidesToShow, setSlidesToShow] = useState(4);
   const { products } = useContext(AppContext);
 
-  // ✅ Fix for refresh issue
   useEffect(() => {
     const updateSlides = () => {
       const width = window.innerWidth;
@@ -69,7 +68,7 @@ const Product = () => {
         },
       },
       {
-        breakpoint: 1024, // tablet
+        breakpoint: 1024,
         settings: {
           slidesToShow: 2,
           arrows: true,

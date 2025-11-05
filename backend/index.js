@@ -23,7 +23,10 @@ const app = express();
 
 app.use(express.json());
 
-const allowedOrigins = ["http://localhost:3000", "http://localhost:5173"];
+const allowedOrigins = [
+  "https://pizza-shop-admin-b2o9.onrender.com",
+  "https://pizza-shop-website-k5v7.onrender.com",
+];
 
 app.use(
   cors({

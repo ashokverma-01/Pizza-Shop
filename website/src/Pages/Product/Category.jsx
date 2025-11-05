@@ -3,39 +3,6 @@ import Slider from "react-slick";
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 import AppContext from "../../Context/AppContext";
 
-const teamMembers = [
-  {
-    name: "John Doe",
-    role: "Founder & CEO",
-    image: "https://randomuser.me/api/portraits/men/32.jpg",
-  },
-  {
-    name: "Jane Smith",
-    role: "Marketing Head",
-    image: "https://randomuser.me/api/portraits/women/44.jpg",
-  },
-  {
-    name: "Michael Lee",
-    role: "Lead Developer",
-    image: "https://randomuser.me/api/portraits/men/55.jpg",
-  },
-  {
-    name: "Sarah Johnson",
-    role: "Customer Support",
-    image: "https://randomuser.me/api/portraits/women/65.jpg",
-  },
-  {
-    name: "Chris Evans",
-    role: "UI/UX Designer",
-    image: "https://randomuser.me/api/portraits/men/76.jpg",
-  },
-  {
-    name: "Emma Wilson",
-    role: "HR Manager",
-    image: "https://randomuser.me/api/portraits/women/25.jpg",
-  },
-];
-
 // ✅ Custom Arrows
 const NextArrow = ({ onClick }) => (
   <button

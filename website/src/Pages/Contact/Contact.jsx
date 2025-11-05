@@ -1,7 +1,7 @@
 import React, { useState, useContext } from "react";
-import axios from "axios";
 import AppContext from "../../Context/AppContext";
 import { ShowToast, Severity } from "../../utils/toast";
+import axiosInstance from "../../utils/axiosUrl";
 
 const Contact = () => {
   const { user } = useContext(AppContext);
@@ -24,10 +24,10 @@ const Contact = () => {
       let body = {};
 
       if (user) {
-        url = "http://localhost:5000/api/users/contact";
+        url = "/api/users/contact";
         body = { message: formData.message };
       } else {
-        url = "http://localhost:5000/api/contact";
+        url = "/api/contact";
         body = {
           name: formData.name,
           email: formData.email,
@@ -42,7 +42,7 @@ const Contact = () => {
         },
       };
 
-      await axios.post(url, body, config);
+      await axiosInstance.post(url, body, config);
       setFormData({ name: "", email: "", message: "" });
       ShowToast("Contact successfully", Severity.SUCCESS);
     } catch (err) {

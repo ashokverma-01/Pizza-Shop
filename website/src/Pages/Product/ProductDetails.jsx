@@ -7,6 +7,7 @@ import { ShowToast } from "../../utils/toast";
 import Slider from "react-slick";
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 import ProductCard from "./ProductCard";
+import axiosInstance from "../../utils/axiosUrl";
 
 const NextArrow = ({ onClick }) => (
   <button
@@ -47,13 +48,14 @@ const ProductDetails = () => {
   const [loadingReview, setLoadingReview] = useState(false);
   const [isSignInOpen, setIsSignInOpen] = useState(false);
 
-  // ✅ Fetch Single Product
   const fetchProduct = async () => {
     try {
-      const res = await fetch(`http://localhost:5000/api/products/${id}`);
-      const data = await res.json();
+      const res = await axiosInstance.get(`/api/products/${id}`);
+      const data = res.data;
+
       setProduct(data);
-      if (data?._id) getRelatedProducts(data._id); // fetch related after product load
+
+      if (data?._id) getRelatedProducts(data._id);
     } catch (err) {
       console.error("Fetch product error:", err);
     }
@@ -63,7 +65,6 @@ const ProductDetails = () => {
     fetchProduct();
   }, [id]);
 
-  // ✅ Slider Responsive Settings
   useEffect(() => {
     const updateSlides = () => {
       const width = window.innerWidth;
@@ -138,31 +139,28 @@ const ProductDetails = () => {
 
     try {
       setLoadingReview(true);
-      const res = await fetch(
-        `http://localhost:5000/api/products/${id}/reviews`,
+
+      // ✅ Axios version of your API call
+      const res = await axiosInstance.post(
+        `/api/products/${id}/reviews`,
+        { rating, comment },
         {
-          method: "POST",
           headers: {
-            "Content-Type": "application/json",
             Authorization: `Bearer ${user.token}`,
           },
-          body: JSON.stringify({ rating, comment }),
         }
       );
 
-      const data = await res.json();
-
-      if (res.ok) {
-        ShowToast("Review added successfully!", "success");
-        setComment("");
-        setRating(0);
-        fetchProduct(); // refresh product data
-      } else {
-        ShowToast(data.message || "Failed to add review", "error");
-      }
+      ShowToast("Review added successfully!", "success");
+      setComment("");
+      setRating(0);
+      fetchProduct(); // refresh product data
     } catch (error) {
       console.error("Review error:", error);
-      ShowToast("Something went wrong!", "error");
+      ShowToast(
+        error.response?.data?.message || "Something went wrong!",
+        "error"
+      );
     } finally {
       setLoadingReview(false);
     }

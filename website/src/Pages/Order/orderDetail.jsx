@@ -9,20 +9,19 @@ const OrderDetail = () => {
   const [order, setOrder] = useState(null);
 
   useEffect(() => {
-    // ✅ Run once when orderId or user changes (not when context re-renders)
     if (!user) return;
 
     const fetchOrder = async () => {
       try {
         const data = await getOrder(orderId);
-        setOrder(data); // store in local state
+        setOrder(data);
       } catch (error) {
         console.error("Error fetching order:", error);
       }
     };
 
     fetchOrder();
-  }, [orderId, user]); // ❌ removed getOrder from dependency list
+  }, [orderId, user]);
 
   if (!order)
     return (
