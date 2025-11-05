@@ -1,0 +1,153 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Base styles */
+body {
+  font-family: "Open Sans", sans-serif !important;
+  background: rgb(247, 246, 246) !important;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+/* =========================================================
+   🌞 Global Scrollbar (Light Mode)
+   ========================================================= */
+body::-webkit-scrollbar {
+  width: 12px;
+}
+
+body::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 10px;
+}
+
+body::-webkit-scrollbar-thumb {
+  background-image: linear-gradient(180deg, #4620f3, #f4e10d, #06f35c);
+  border-radius: 10px;
+  border: 2px solid #f1f1f1;
+  transition: all 0.3s ease;
+}
+
+body::-webkit-scrollbar-thumb:hover {
+  background-image: linear-gradient(180deg, #ff9a9a, #ff4d4d, #b30000);
+}
+
+/* Scrollbar buttons (Top & Bottom) */
+body::-webkit-scrollbar-button {
+  display: block;
+  height: 12px;
+  border-radius: 3px;
+  background-color: #e0e0e0;
+  background-repeat: no-repeat;
+  background-position: center;
+  transition: background 0.3s;
+}
+
+/* Up arrow */
+body::-webkit-scrollbar-button:single-button:vertical:decrement {
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg width='10' height='10' xmlns='http://www.w3.org/2000/svg'%3E%3Cpolygon points='5,2 8,7 2,7' fill='%234620f3'/%3E%3C/svg%3E");
+}
+
+/* Down arrow */
+body::-webkit-scrollbar-button:single-button:vertical:increment {
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg width='10' height='10' xmlns='http://www.w3.org/2000/svg'%3E%3Cpolygon points='2,3 8,3 5,8' fill='%234620f3'/%3E%3C/svg%3E");
+}
+
+/* Hover effect on arrow buttons */
+body::-webkit-scrollbar-button:hover {
+  background-color: #d0d0d0;
+}
+
+/* =========================================================
+   🌙 Dark Mode Scrollbar
+   ========================================================= */
+.dark body::-webkit-scrollbar-track {
+  background: #1f1f1f;
+}
+
+.dark body::-webkit-scrollbar-thumb {
+  background-image: linear-gradient(180deg, #0ae4fc, #eb0559, #3ec58f);
+  border: 2px solid #1f1f1f;
+}
+
+.dark body::-webkit-scrollbar-button {
+  background-color: #333;
+}
+
+/* Up arrow (Dark) */
+.dark body::-webkit-scrollbar-button:single-button:vertical:decrement {
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg width='10' height='10' xmlns='http://www.w3.org/2000/svg'%3E%3Cpolygon points='5,2 8,7 2,7' fill='%230ae4fc'/%3E%3C/svg%3E");
+}
+
+/* Down arrow (Dark) */
+.dark body::-webkit-scrollbar-button:single-button:vertical:increment {
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg width='10' height='10' xmlns='http://www.w3.org/2000/svg'%3E%3Cpolygon points='2,3 8,3 5,8' fill='%233ec58f'/%3E%3C/svg%3E");
+}
+
+/* Hover on dark arrows */
+.dark body::-webkit-scrollbar-button:hover {
+  background-color: #444;
+}
+
+/* =========================================================
+   🧩 Custom Scroll Area (For specific divs)
+   ========================================================= */
+.custom-scroll::-webkit-scrollbar {
+  width: 10px;
+}
+
+.custom-scroll::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+.custom-scroll::-webkit-scrollbar-thumb {
+  background-image: linear-gradient(180deg, #4620f3, #f4e10d, #06f35c);
+  border-radius: 10px;
+  border: 2px solid #f1f1f1;
+}
+
+/* Buttons inside custom-scroll */
+.custom-scroll::-webkit-scrollbar-button {
+  height: 12px;
+  background-color: #ccc;
+  border-radius: 4px;
+  display: block;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+/* Up & Down arrows */
+.custom-scroll::-webkit-scrollbar-button:single-button:vertical:decrement {
+  background-image: url("data:image/svg+xml;utf8,<svg fill='black' xmlns='http://www.w3.org/2000/svg' width='8' height='8'><polygon points='0,6 4,2 8,6'/></svg>");
+}
+
+.custom-scroll::-webkit-scrollbar-button:single-button:vertical:increment {
+  background-image: url("data:image/svg+xml;utf8,<svg fill='black' xmlns='http://www.w3.org/2000/svg' width='8' height='8'><polygon points='0,2 4,6 8,2'/></svg>");
+}
+
+/* Dark mode */
+.dark .custom-scroll::-webkit-scrollbar-track {
+  background: #1f1f1f;
+}
+
+.dark .custom-scroll::-webkit-scrollbar-thumb {
+  background-image: linear-gradient(180deg, #0ae4fc, #eb0559, #3ec58f);
+  border: 2px solid #1f1f1f;
+}
+
+.dark .custom-scroll::-webkit-scrollbar-button {
+  background-color: #333;
+}
+
+.dark
+  .custom-scroll::-webkit-scrollbar-button:single-button:vertical:decrement {
+  background-image: url("data:image/svg+xml;utf8,<svg fill='white' xmlns='http://www.w3.org/2000/svg' width='8' height='8'><polygon points='0,6 4,2 8,6'/></svg>");
+}
+
+.dark
+  .custom-scroll::-webkit-scrollbar-button:single-button:vertical:increment {
+  background-image: url("data:image/svg+xml;utf8,<svg fill='white' xmlns='http://www.w3.org/2000/svg' width='8' height='8'><polygon points='0,2 4,6 8,2'/></svg>");
+}

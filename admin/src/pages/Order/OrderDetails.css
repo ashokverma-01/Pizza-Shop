@@ -1,0 +1,73 @@
+.order-progress {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+  flex-wrap: wrap;
+  margin-bottom: 2rem;
+}
+
+.progress-step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1 1 auto;
+  position: relative;
+  margin-bottom: 1rem;
+}
+
+.step-circle {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: 2px solid #ccc;
+  background-color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+  z-index: 1;
+}
+
+.step-circle.completed {
+  border-color: #28a745;
+  background-color: #28a745;
+  color: #fff;
+}
+
+.step-circle.cancelled {
+  border-color: #dc3545;
+  background-color: #dc3545;
+  color: #fff;
+}
+
+.step-label {
+  margin-top: 0.5rem;
+  font-size: 0.75rem;
+  text-align: center;
+}
+
+.step-line {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  height: 4px;
+  width: 100%;
+  background-color: #ccc;
+  z-index: 0;
+}
+
+.step-line.completed {
+  background-color: #28a745;
+}
+
+@media (max-width: 576px) {
+  .step-label {
+    font-size: 0.65rem;
+  }
+  .step-circle {
+    width: 25px;
+    height: 25px;
+    font-size: 0.7rem;
+  }
+}
