@@ -48,9 +48,9 @@ function App() {
             <Route path="/order/:orderId" element={<OrderDetail />} />
             <Route path="/allorder" element={<AllOrder />} />
             <Route path="/profile" element={<Profile />} />
-            <Route path="/privacypolicy" element={<Privacy />} />
-            <Route path="/terms&conditions" element={<Terms />} />
-            <Route path="/shippinginfo" element={<ShippingInfo />} />
+            <Route path="/privacy" element={<Privacy />} />
+            <Route path="/terms" element={<Terms />} />
+            <Route path="/shipping" element={<ShippingInfo />} />
             <Route path="/faq" element={<Faq />} />
           </Routes>
         </main>

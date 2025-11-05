@@ -90,12 +90,7 @@ const Footer = () => {
               Customer Service
             </h3>
             <ul className="space-y-3">
-              {[
-                "FAQ",
-                "Shipping Info",
-                "Privacy Policy",
-                "Terms & Conditions",
-              ].map((item) => (
+              {["FAQ", "Shipping", "Privacy", "Terms"].map((item) => (
                 <li key={item}>
                   <Link
                     to={`/${item.toLowerCase()}`}
