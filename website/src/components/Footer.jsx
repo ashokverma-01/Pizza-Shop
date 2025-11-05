@@ -7,6 +7,7 @@ import {
   FaLinkedin,
 } from "react-icons/fa";
 import Logo from "../../assets/logo.jpg";
+import { Link } from "react-router-dom";
 
 const Footer = () => {
   return (
@@ -72,12 +73,12 @@ const Footer = () => {
             <ul className="space-y-3">
               {["Home", "About", "Products", "Contact"].map((item) => (
                 <li key={item}>
-                  <a
+                  <Link
                     to={`/${item.toLowerCase()}`}
-                    className="hover:text-blue-600 dark:hover:text-blue-400  text-gray-600 dark:text-gray-400 transition-colors duration-200 hover:underline underline-offset-4"
+                    className="hover:text-blue-600 dark:hover:text-blue-400 text-gray-600 dark:text-gray-400 transition-colors duration-200 hover:underline underline-offset-4"
                   >
                     {item}
-                  </a>
+                  </Link>
                 </li>
               ))}
             </ul>
@@ -96,12 +97,12 @@ const Footer = () => {
                 "Terms & Conditions",
               ].map((item) => (
                 <li key={item}>
-                  <a
+                  <Link
                     to={`/${item.toLowerCase()}`}
                     className="hover:text-blue-600 dark:hover:text-blue-400  text-gray-600 dark:text-gray-400 transition-colors duration-200 hover:underline underline-offset-4"
                   >
                     {item}
-                  </a>
+                  </Link>
                 </li>
               ))}
             </ul>
