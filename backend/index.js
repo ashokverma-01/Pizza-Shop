@@ -20,7 +20,6 @@ const port = process.env.PORT || 5000;
 connectDB();
 
 const app = express();
-app.use(express.json());
 
 const allowedOrigins = [
   "https://pizza-shop-admin-b2o9.onrender.com",
@@ -43,7 +42,7 @@ app.use(
 );
 
 app.options("*", cors());
-
+app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
