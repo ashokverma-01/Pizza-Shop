@@ -25,6 +25,7 @@ app.use(express.json());
 const allowedOrigins = [
   "https://pizza-shop-admin-b2o9.onrender.com",
   "https://pizza-shop-website-k5v7.onrender.com",
+  "https://pizza-shop-opal.vercel.app",
 ];
 
 app.use(

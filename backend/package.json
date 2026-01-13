@@ -9,7 +9,7 @@
     "dev": "nodemon index.js"
   },
   "keywords": [],
-  "author": "HuXn WebDev",
+  "author": "Ashok Verma",
   "license": "ISC",
   "dependencies": {
     "bcryptjs": "^2.4.3",
