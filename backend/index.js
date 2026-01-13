@@ -25,19 +25,27 @@ const allowedOrigins = [
   "https://pizza-shop-admin-b2o9.onrender.com",
   "https://pizza-shop-website-k5v7.onrender.com",
   "https://pizza-shop-opal.vercel.app",
+  "http://localhost:3000",
 ];
 
 app.use(
   cors({
     origin: function (origin, callback) {
-      if (!origin || allowedOrigins.includes(origin)) {
+      // Agar origin list mein hai ya phir Vercel ka koi bhi subdomain hai
+      if (
+        !origin ||
+        allowedOrigins.includes(origin) ||
+        origin.endsWith(".vercel.app")
+      ) {
         callback(null, true);
       } else {
-        console.log("CORS blocked origin:", origin);
+        console.error("Blocked by CORS:", origin);
         callback(new Error("Not allowed by CORS"));
       }
     },
     credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
 
